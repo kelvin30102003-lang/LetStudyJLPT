@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  laravel:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: letstudyjlpt_testing
+          MYSQL_USER: letstudyjlpt
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: rootsecret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -prootsecret"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:7.4-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: bcmath, intl, mbstring, pdo_mysql, redis, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Format check
+        run: vendor/bin/pint --test
+
+      - name: Static analysis
+        run: vendor/bin/phpstan analyse --memory-limit=1G
+
+      - name: Tests
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: letstudyjlpt_testing
+          DB_USERNAME: letstudyjlpt
+          DB_PASSWORD: secret

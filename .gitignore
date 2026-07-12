@@ -3,6 +3,48 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Laravel / PHP
+/vendor/
+/.env
+/.env.*
+!/.env.example
+/storage/*.key
+/storage/app/*
+!/storage/app/.gitkeep
+/storage/app/public/*
+!/storage/app/public/.gitkeep
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+/public/storage
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Frontend build output
+/node_modules/
+/public/build/
+/public/hot
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Tooling
+/.phpunit.cache/
+/.phpunit.result.cache
+/.pint.cache
+/.phpstan.cache
+
+# Docker local volumes or overrides
+docker-compose.override.yml
+
 # User-specific files
 *.rsuser
 *.suo

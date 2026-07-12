@@ -1,0 +1,76 @@
+{
+    "name": "letstudyjlpt/platform",
+    "type": "project",
+    "description": "JLPT/NAT smart examination platform built with Laravel 12.",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.4",
+        "laravel/framework": "^12.0",
+        "laravel/horizon": "^5.0",
+        "laravel/pulse": "^1.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.0",
+        "meilisearch/meilisearch-php": "^1.9",
+        "predis/predis": "^2.2",
+        "sentry/sentry-laravel": "^4.0",
+        "spatie/laravel-permission": "^6.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.0",
+        "laravel/telescope": "^5.0",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "nunomaduro/larastan": "^3.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "analyse": "phpstan analyse",
+        "format": "pint",
+        "test": "pest"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
